@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS base
+FROM ubuntu AS base
 WORKDIR /usr/local/bin
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
@@ -10,14 +10,14 @@ RUN apt-get update && \
     apt-get clean autoclean && \
     apt-get autoremove --yes
 
-FROM base AS prime
-ARG TAGS
-RUN addgroup --gid 1000 theprimeagen
-RUN adduser --gecos theprimeagen --uid 1000 --gid 1000 --disabled-password theprimeagen
-USER theprimeagen
-WORKDIR /home/theprimeagen
+# FROM base AS prime
+# ARG TAGS
+# RUN addgroup --gid 1000 theprimeagen
+# RUN adduser --gecos theprimeagen --uid 1000 --gid 1000 --disabled-password theprimeagen
+# USER theprimeagen
+# WORKDIR /home/theprimeagen
 
-FROM prime
+# FROM prime
 COPY . .
 CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]
 
